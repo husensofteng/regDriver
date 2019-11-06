@@ -15,7 +15,7 @@ The following packages are required to run the regDriver method:
 
 ## Run the regDriver
 
-	```python regDriver.py regDriver_params.conf```
+	python regDriver.py regDriver_params.conf
 
 
 	A copy of the regDriver_params.conf file that contains all parameters and options for the file can be found above 
