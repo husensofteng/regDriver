@@ -20,7 +20,8 @@ import numpy as np
 import shutil
 
 def usage():
-    return "***Usage***\n python regDriver.py [param=value] regDriver_params.conf_file (priority is given to the command line arguments then the input params file"
+    print("***Usage***\n python regDriver.py [param=value] regDriver_params.conf_file (priority is given to the command line arguments then the input params file)")
+    sys.exit(0)
 
 def map_cellNames_to_originTypes(originType_cell_dict_input_file):
     
@@ -459,11 +460,10 @@ def get_value(str):
 if __name__ == '__main__':
     
     params = get_params(sys.argv)
-    print("Given params")
-    print(params)
     if len(params.keys())==0:
         usage()
-        sys.exit(0)
+    print("Given params", params)
+        
     run_training = get_value(params['run_training_arg'])    
     take_abs_entropy_diff = get_value(params['take_abs_entropy_diff_arg'])
     use_gene_expression_for_scoring = get_value(params['use_gene_expression_for_scoring_arg'])
