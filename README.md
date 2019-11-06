@@ -1,4 +1,4 @@
-# regdriver
+# regDriver
 regDriver to detect functional somatic mutaionts
 
 ## Required tools and modules
