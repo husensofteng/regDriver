@@ -1,5 +1,5 @@
 '''
-Created on Mar 30, 2016
+Main module to run the regDriver method
 
 @author: Husen M. Umer
 '''
@@ -49,7 +49,7 @@ def retreive_cell_elment_datasets(target_director_of_cells_info, list_of_file_tr
     tf_names_output_file = target_director_of_cells_info.split('/')[-1]+"_tfNames.txt"
     assay_type_cell_tracks_output_file = target_director_of_cells_info.split('/')[-1]+"_assayType_cells.txt"
     if os.path.exists(cell_tracks_names_output_file) and os.path.exists(tf_names_output_file) and os.path.exists(assay_type_cell_tracks_output_file):
-        print "Using cell tracks listed in: " + os.path.abspath(cell_tracks_names_output_file)
+        print("Using cell tracks listed in: " + os.path.abspath(cell_tracks_names_output_file))
         with open(cell_tracks_names_output_file, 'r') as cell_tracks_names_outfile:
             cell_tracks_line = cell_tracks_names_outfile.readline()
             list_of_cell_tracks = cell_tracks_line.strip().split(',')
@@ -94,7 +94,7 @@ def retreive_cell_elment_datasets(target_director_of_cells_info, list_of_file_tr
         for file_track in list_of_file_tracks_to_add_cell_tracks:
             with open(file_track, 'r') as file_track_read:
                 line = file_track_read.readline()
-                print "reading: " + file_track
+                print("reading: " + file_track)
                 while line!="":
                     track_names = line.strip().split('\t')[index_track_name_in_file_tracks].split(',')
                     for track_name in track_names:
@@ -138,7 +138,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
                             tumor_cells_tracks_dict, list_of_cell_tracks, assay_type_cell_tracks_dict, motifTFName_TFNames_matches_dict, mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file, 
                             normal_expression_per_cell_per_TF, tumor_expression_per_cell_per_TF, index_sampleID_in_mutations_inputfile=8, remove_temp_files = True,
                             col_names=[], run_training= False, weights_per_param_dict = {}, take_abs_entropy_diff=True, log_base=10, header=True, only_unify_per_sample = False, window_overlap_to_merge = 20, chromatin_states_to_consider=[], use_estimates_from_simulation_set=False, mean_and_sd_from_the_simulations_indiv_sites_dict={}, retrieve_estimates_from_simulation_set = True, bed12_format_bool = True, params={}):
-    print "a new process has started"
+    print("a new process has started")
     mutations_motifs_intersected_output_file =  mutations_file.split('/')[-1] +"_overlappingmotifs"
     mutations_motifs_intersected_output_file_sorted =  mutations_file.split('/')[-1] +"_overlappingmotifssorted"
     no_motif_matching_file_was_found = True
@@ -146,7 +146,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
     if not os.path.exists(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped):
         mutations_file_obj = BedTool(mutations_file)
         mutations_elements = ""
-        print "Operating on: " + mutations_file
+        print("Operating on: " + mutations_file)
         #intersect the mutations with a preset of elements to search from (search domain,e.g a list of pre-difined regulatory regions or promoters) this is to minimize the searching domain and the number of mutations in the next processes
         if elements_file!="none":
             elements_file_obj = BedTool(elements_file)
@@ -155,7 +155,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
             if os.stat(mutations_elements.fn).st_size>2:
                 mutations_file_obj = mutations_elements
         #intersect mutations with motifs
-        print "Finding overlap with motif sites"
+        print("Finding overlap with motif sites")
         for motif_sites_file in os.listdir(motif_sites_dir):
             if motif_sites_file.split('.')[0] == mutations_file.split('/')[-1].split('.')[0].split('_')[0]: #to only intersect the mutations file with the motif file of the matching chromosome (chr1==chr1)
                 no_motif_matching_file_was_found = False 
@@ -165,14 +165,14 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
                 os.system('sort -k1,1 -k2,2n -k3,3n -k' + str(index_sampleID_in_mutations_inputfile+1) + ',' + str(index_sampleID_in_mutations_inputfile+1) + ' '+ mutations_motifs_intersected_output_file + ' > ' + mutations_motifs_intersected_output_file_sorted)
                 pybedtools.cleanup()
                 #score each mut-motif
-                print "Calculating entropy diff for the mutations found at motifs"
+                print("Calculating entropy diff for the mutations found at motifs")
                 mutations_motifs_scored_file = score_motifs_according_to_their_affect(motif_PFM_file, muts_mutated_motifs_input_file=mutations_motifs_intersected_output_file_sorted, index_mutations_info=0, index_mutated_motif_info=9, index_fromAllele = 3, index_toAllele = 4)
                 if remove_temp_files:
                     if os.path.exists(mutations_motifs_intersected_output_file):
                         os.remove(mutations_motifs_intersected_output_file)
                         os.remove(mutations_motifs_intersected_output_file_sorted)
                     else:
-                        print "No mutation was found at motif sites: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file
+                        print("No mutation was found at motif sites: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file)
                 #intersect then score mut-motifs with all chromatin signals
                 mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped = mutations_motifs_scored_file+"_allchromatin_makrs_all_cells_grouped"
                 all_chromatin_makrs_all_cells_files = os.listdir(all_chromatin_makrs_all_cells_dir)
@@ -182,7 +182,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
                 for all_chromatin_makrs_all_cells in all_chromatin_makrs_all_cells_files:
                     if all_chromatin_makrs_all_cells.split('.')[0] == mutations_file.split('/')[-1].split('.')[0].split('_')[0]: #to only intersect the mutations file with the chromain info of the matching chromosome (chr1==chr1)
                         all_chromatin_makrs_all_cells_obj = BedTool(all_chromatin_makrs_all_cells_dir + '/' + all_chromatin_makrs_all_cells)
-                        print "Finding and Grouping overlaps between the mut-motifs and all chromatin signals"
+                        print("Finding and Grouping overlaps between the mut-motifs and all chromatin signals")
                         mutations_motifs_scored_file_obj.intersect(all_chromatin_makrs_all_cells_obj, wo=True)\
                         .groupby(g=range(1, 18), c=21, o = ['distinct'])\
                         .saveas(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped)
@@ -192,7 +192,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
                     os.remove(mutations_motifs_scored_file)
                 pybedtools.cleanup()
     #annotate the mut-motifs with the chromatin signals
-    print "Annotating the mutations"
+    print("Annotating the mutations")
     #use the expression level of each cell#TF from normal_expression_per_cell_per_TF, tumor_expression_per_cell_per_TF
     mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated = mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped+"_annotated"
     if run_training:
@@ -203,7 +203,7 @@ def annotate_mutations_file(mutations_file, elements_file, motif_sites_dir, moti
         if remove_temp_files:
             os.remove(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped)
     if no_motif_matching_file_was_found:
-        print "No matching-chr motif file was for: " + mutations_file  + " chromosome..."         
+        print("No matching-chr motif file was for: " + mutations_file  + " chromosome...")         
     
     if not run_training and os.path.exists(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated):
     #unify the same mutations affecting different motifs in the same sample, merge mutations across samples and cancer projects
@@ -247,7 +247,7 @@ def rank_scored_muts(tumor_type_file, tumor_type_file_ranked, index_score=61):
     tumor_type_file_readfile = open(tumor_type_file, 'r')
     line = tumor_type_file_readfile.readline()
     scores = []
-    print "Reading scores for ranking"
+    print("Reading scores for ranking")
     while line!="":
         scores.append(float(line.strip().split('\t')[index_score]))
         line = tumor_type_file_readfile.readline()
@@ -256,7 +256,7 @@ def rank_scored_muts(tumor_type_file, tumor_type_file_ranked, index_score=61):
     #rank the scores
     ranks = (stats.rankdata(scores, "average")/len(scores)).tolist()
     
-    print "Writing the ranks"
+    print("Writing the ranks")
     tumor_type_file_readfile = open(tumor_type_file, 'r')
     line = tumor_type_file_readfile.readline().strip()
     tumor_type_file_ranked_write_file = open(tumor_type_file_ranked, 'w')
@@ -325,7 +325,7 @@ def process_annotated_scored_mutations(annotated_mutations_final_output_file_ran
                         awk_stm = ("cut -f1-4," + str(number_cols_in_elements_file+1) + "- " + elements_muts_temp + """ | awk 'BEGIN{FS=OFS="\t"}{print $1,$2,$3,$4,$8,$9,$10,$5":"$6"-"$7"@"$8"@"$9"@"$10"@"$11"@"$12"@"$13"@"$14,$12,$13,$14}' | sort -k1,1 -k2,2n -k3,3n -k4,4 | groupBy -g 1,2,3,4 -c 5,5,6,7,8,9,10,11 -o collapse,count,collapse,distinct,collapse,distinct,distinct,sum""") 
                         #Input: element_chr, element_start,element_end, elementID, mut_chr, start, end, sampleID, refalt, tumorType, info, chromatinDomain, repliDomain, score
                     else:
-                        print 'no muts have a score larger than: ' + str(min_indiv_score_to_consider)
+                        print('no muts have a score larger than: ' + str(min_indiv_score_to_consider))
                     #intermediate (prepared for groupBy): element_chr, element_start,element_end, elementID, sampleID, tumorType, chromatin_label, repliLabel, score, mut_chr:start-end@sampleID@refalt@tumorType@info@chromatinDomain@repliDomain@score
                 #final statement: element_chr, element_start,element_end, elementID, sampleID, sample_count, refToalt, tumorTypes, chromatin_label, repliLabel, sum_score, mut_chr:start-end@sampleID@refalt@tumorType@info@chromatinDomain@repliDomain@score
             else:
@@ -383,7 +383,7 @@ def get_mean_and_sd_from_simulation_sets(scored_simulation_input_file, mean_and_
     
     mean_std_median_dict = {}
     if os.path.exists(mean_and_sd_output_file):
-        print "reading mean and sd from an existsing fiel: " + mean_and_sd_output_file
+        print("reading mean and sd from an existsing fiel: " + mean_and_sd_output_file)
         with open(mean_and_sd_output_file, 'r') as mean_and_sd_read:
             lines = mean_and_sd_read.readlines()
             for l in lines:
@@ -418,7 +418,7 @@ def get_pvalues_per_element_score(annotated_mutations_statcalc_output_file, anno
                     annotated_mutations_statcalc_output_file_scores_significance_write.write(read_line.strip() + '\t' + str(p_value) + '\n')
                     read_line = annotated_mutations_statcalc_read.readline()
     else:
-        print "mean or std is not provided in the given file"
+        print("mean or std is not provided in the given file")
     return annotated_mutations_statcalc_output_file_scores_significance
             
 def get_matching_cells_tracks_per_tumor(list_of_cell_tracks, tumor_cells_dict):
@@ -459,8 +459,8 @@ def get_value(str):
 if __name__ == '__main__':
     
     params = get_params(sys.argv)
-    print "Given params"
-    print params
+    print("Given params")
+    print(params)
     if len(params.keys())==0:
         usage()
         sys.exit(0)
@@ -510,10 +510,10 @@ if __name__ == '__main__':
     if not os.path.exists(params['annotated_mutations_final_output_file']):
         if use_estimates_from_simulation_set and not retrieve_estimates_from_simulation_set:
             if os.path.exists(params['scored_simulation_input_file']+"_withoutfilterunifiedpersample") and params['mean_and_sd_output_file']!='none':
-                print 'Getting mean and Std from: ' + params['scored_simulation_input_file']+"_withoutfilterunifiedpersample"
+                print('Getting mean and Std from: ' + params['scored_simulation_input_file']+"_withoutfilterunifiedpersample")
                 mean_and_sd_from_the_simulations_indiv_sites_dict = get_mean_and_sd_from_simulation_sets(params['scored_simulation_input_file']+"_withoutfilterunifiedpersample", params['mean_and_sd_output_file']+"_withoutfilterunifiedpersample", score_index_simulation_file=int(params['score_index_simulation_file']))
             else: 
-                print "using the default values for mean and sd (0,0) for single sites beacuse the score_per_site file doesn't exist"
+                print("using the default values for mean and sd (0,0) for single sites beacuse the score_per_site file doesn't exist")
         list_of_cell_tracks, list_tf_names_from_tracks, assay_type_cell_tracks_dict  = retreive_cell_elment_datasets(params['CellInfo_target_dir'], list_of_file_tracks_to_add_cell_tracks)
         tumor_cells_dict = map_cellNames_to_originTypes(params['TumorCellInfo_matches_dict'])
         tissue_cells_dict = map_cellNames_to_originTypes(params['TissueCellInfo_matches_dict'])
@@ -531,7 +531,7 @@ if __name__ == '__main__':
         if os.path.exists(params['normal_gene_expression_inputfile']) and os.path.exists(params['metadata_samples_normal_gene_expression_file']):
             dict_tissue_type_sampleIDs = parse_GTEx_metadafile(params['metadata_samples_normal_gene_expression_file'])
             origin_gene_expression_values = get_expression_level_per_originType_per_TF(tf_names_to_extract_gene_expression_for, dict_tissue_type_sampleIDs, params['normal_gene_expression_inputfile'])
-            print "Getting expression per cell#TF in normal samples"
+            print("Getting expression per cell#TF in normal samples")
             origin_gene_expression_values_outputfile = params['normal_gene_expression_inputfile'] + "_perCell_perTF"
             normal_expression_per_cell_per_TF = get_expression_level_per_cell_per_TF(tf_names_to_extract_gene_expression_for, origin_gene_expression_values, tissue_cells_dict, origin_gene_expression_values_outputfile)
         
@@ -540,7 +540,7 @@ if __name__ == '__main__':
         if os.path.exists(params['tumor_gene_expression_inputfile']) and os.path.exists(params['metadata_samples_tumor_gene_expression_file']):
             dict_tissue_type_sampleIDs = parse_GTEx_metadafile(params['metadata_samples_tumor_gene_expression_file'])
             origin_gene_expression_values = get_expression_level_per_originType_per_TF(tf_names_to_extract_gene_expression_for, dict_tissue_type_sampleIDs, params['tumor_gene_expression_inputfile'])
-            print "Getting expression per cell#TF in tumor samples"
+            print("Getting expression per cell#TF in tumor samples")
             origin_gene_expression_values_outputfile = params['normal_gene_expression_inputfile'] + "_perCell_perTF"
             tumor_expression_per_cell_per_TF = get_expression_level_per_cell_per_TF(tf_names_to_extract_gene_expression_for, origin_gene_expression_values, tumor_cells_dict, origin_gene_expression_values_outputfile)
         
@@ -551,22 +551,22 @@ if __name__ == '__main__':
             populate_cellinfo_dirs(dict_cell_lines_info, params['CellInfo_target_dir'])
         
             os.mkdir(params['all_chromatin_makrs_all_cells_combined_dir_path'])
-            print "Generating chromatin data for all the cells"
+            print("Generating chromatin data for all the cells")
             os.system("cat " + params['CellInfo_target_dir'] + "/*/ChIP-seq/*ChIP-seq.bed4 " + params['CellInfo_target_dir'] + "/*/ChromatinStates/*_ChromatinStates.bed4 " + params['CellInfo_target_dir'] + "/*/DNase-seq/*_DNase-seq.bed4 | "  + """awk '{print $0 >> \"""" + params['all_chromatin_makrs_all_cells_combined_dir_path'] + """/"$1".bed4"}'""")
             if os.path.exists(params['CAGE_expr_file_path']):
-                print "Appending CAGE peak expr data to the cell info data"
+                print("Appending CAGE peak expr data to the cell info data")
                 os.system("cat " + params['CAGE_expr_file_path']+ """ | awk '{print $0 >> \"""" + params['all_chromatin_makrs_all_cells_combined_dir_path'] + """/"$1".bed4"}'""")
             if os.path.exists(params['ContactingDomains_file_path']):
-                print "Appending Contacting domains to the cell info data"
+                print("Appending Contacting domains to the cell info data")
                 os.system("cat " + params['ContactingDomains_file_path'] + """ | awk '{print $0 >> \"""" + params['all_chromatin_makrs_all_cells_combined_dir_path'] + """/"$1".bed4"}'""")
             if os.path.exists(params['LoopDomains_file_path']):
-                print "Appending Loop domains to the cell info data"
+                print("Appending Loop domains to the cell info data")
                 os.system("cat " + params['LoopDomains_file_path'] + """ | awk '{print $0 >> \"""" + params['all_chromatin_makrs_all_cells_combined_dir_path'] + """/"$1".bed4"}'""")
             
             if os.path.exists(params['ReplicationDomains_file_path']):
-                print "Appending Replication domains to the cell info data"
+                print("Appending Replication domains to the cell info data")
                 os.system("cat " + params['ReplicationDomains_file_path'] + """ | awk '{print $0 >> \"""" + params['all_chromatin_makrs_all_cells_combined_dir_path'] + """/"$1".bed4"}'""")
-            print "collected all the chromatin states."
+            print("collected all the chromatin states.")
         
         if run_in_parallele and len(Mutations_dir_list)>1:
             p = Pool(int(params['number_processes_to_run_in_parallel']))
@@ -577,13 +577,13 @@ if __name__ == '__main__':
                 mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_files.append(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file)
                 if not os.path.exists(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file): 
                     #run in parallel for different mutations
-                    print "Added to the queue: " + mutations_file
+                    print("Added to the queue: " + mutations_file)
                     p.apply_async(annotate_mutations_file, args=(mutations_file, params['elements_file'], params['motif_sites_dir'], params['motif_PFM_file'], params['all_chromatin_makrs_all_cells_combined_dir_path'], tumor_cells_dict, tumor_cells_tracks_dict, list_of_cell_tracks, assay_type_cell_tracks_dict, motifTFName_TFNames_matches_dict, mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file, normal_expression_per_cell_per_TF, tumor_expression_per_cell_per_TF, 8, remove_temp_files, col_names, run_training, weights_per_param_dict, take_abs_entropy_diff, int(params['log_base']), header, only_unify_per_sample, int(params['window_overlap_to_merge']), params['chromatin_states_to_consider'].split(','), use_estimates_from_simulation_set, mean_and_sd_from_the_simulations_indiv_sites_dict, retrieve_estimates_from_simulation_set, bed12_format_bool, params))
                 else:
-                    print "Using existing: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file
+                    print("Using existing: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file)
             p.close()
             p.join()
-            print "finished all process"    
+            print("finished all process")
         else:
             for mutations_file in Mutations_dir_list:
                 if "chr" not in mutations_file.split('/')[-1]:
@@ -591,12 +591,12 @@ if __name__ == '__main__':
                 mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file = mutations_file.split('/')[-1] + "_annotatedscoredmerged"
                 mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_files.append(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file)
                 if not os.path.exists(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file): 
-                    print "start seq run"
+                    print("start seq run")
                     annotate_mutations_file(mutations_file, params['elements_file'], params['motif_sites_dir'], params['motif_PFM_file'], params['all_chromatin_makrs_all_cells_combined_dir_path'], tumor_cells_dict, tumor_cells_tracks_dict, list_of_cell_tracks, assay_type_cell_tracks_dict, motifTFName_TFNames_matches_dict, mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file, normal_expression_per_cell_per_TF, tumor_expression_per_cell_per_TF, 8, remove_temp_files, col_names, run_training, weights_per_param_dict, take_abs_entropy_diff, int(params['log_base']), header, only_unify_per_sample, int(params['window_overlap_to_merge']), params['chromatin_states_to_consider'].split(','), use_estimates_from_simulation_set, mean_and_sd_from_the_simulations_indiv_sites_dict, retrieve_estimates_from_simulation_set, bed12_format_bool, params)
                 else:
-                    print "Using existing: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file
+                    print("Using existing: " + mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_file)
         if len(mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_files) < 1:
-            print 'no mutation file is processed (check name (it should contain chr in the name) and content of the given directory or the given file)'
+            print('no mutation file is processed (check name (it should contain chr in the name) and content of the given directory or the given file)')
         #collect the results and merge them
         if params['annotated_mutations_final_output_file']!="none":
             if retrieve_estimates_from_simulation_set:
@@ -627,17 +627,17 @@ if __name__ == '__main__':
             with open(params['annotated_mutations_final_output_file'], 'w') as annotated_mutations_final_outfile:
                 #if header:
                     #annotated_mutations_final_outfile.write('\t'.join(col_names[0:]) + '\n')#write header only to the final combined file
-                print "Generating a combined set of annotations for all mutation"
+                print("Generating a combined set of annotations for all mutation")
                 for annotated_mutations_file in mutations_motifs_scored_all_chromatin_makrs_all_cells_grouped_annotated_files:
                     if os.path.exists(annotated_mutations_file):
                         if os.stat(annotated_mutations_file).st_size > 2:
-                            print "Concatenating (size check): " + annotated_mutations_file
+                            print("Concatenating (size check): " + annotated_mutations_file)
                             with open(annotated_mutations_file, 'r') as annotated_mutations_infile:
                                 annotated_mutations_final_outfile.write(annotated_mutations_infile.read())
                         if remove_temp_files:
                             os.remove(annotated_mutations_file) 
     else:
-        print "Using the existing final annotated muts file: " + params['annotated_mutations_final_output_file']
+        print("Using the existing final annotated muts file: " + params['annotated_mutations_final_output_file'])
         #check intersection of annotated mutations with required sets and filter
     #filter the annotated mutations according to given conditions, merge the motifs to calculate p-values per window
     #needs improvement from here and optimization from above
@@ -659,19 +659,19 @@ if __name__ == '__main__':
                 tumor_type_files = os.listdir(tumor_types_dir)
                 #start a pool of processes
                 if run_in_parallele:
-                    print "running in parallel - ranking"
+                    print("running in parallel - ranking")
                     k = Pool(int(params['number_processes_to_run_in_parallel']))
                     for tumor_type_file in tumor_type_files:
                         tumor_type_file_ranked = tumor_types_dir + tumor_type_file + "_ranked"
                         ranked_files.append(tumor_type_file_ranked)
                         if not os.path.exists(tumor_type_file_ranked): 
                             #run in parallel for different mutations
-                            print "Added to the queue: " + tumor_types_dir + tumor_type_file
+                            print("Added to the queue: " + tumor_types_dir + tumor_type_file)
                             k.apply_async(rank_scored_muts, args=(tumor_types_dir+tumor_type_file, tumor_type_file_ranked, index_score))
                     k.close()
                     k.join()
                 else:
-                    print "run in seq."
+                    print("run in seq.")
                     for tumor_type_file in tumor_type_files:
                         tumor_type_file_ranked = tumor_type_file+"_ranked"
                         ranked_files.append(tumor_type_file_ranked)
@@ -681,20 +681,20 @@ if __name__ == '__main__':
                 #collect the results and merge them
                 if params['annotated_mutations_final_output_file']!="none":
                     with open(annotated_mutations_final_output_file_ranked, 'w') as annotated_mutations_final_output_file_ranked_outfile:
-                        print "Generating a combined file for ranked annotated-mutations"
+                        print("Generating a combined file for ranked annotated-mutations")
                         for ranked_file in ranked_files:
                             if os.path.exists(ranked_file):
                                 if os.stat(ranked_file).st_size > 2:
-                                    print "Concatinating (size check): " + ranked_file
+                                    print("Concatinating (size check): " + ranked_file)
                                     with open(ranked_file, 'r') as ranked_file_infile:
                                         annotated_mutations_final_output_file_ranked_outfile.write(ranked_file_infile.read())
                             
-                print "Finished score ranking"
+                print("Finished score ranking")
             else:
-                print "Using the existing ranked file: " + annotated_mutations_final_output_file_ranked
+                print("Using the existing ranked file: " + annotated_mutations_final_output_file_ranked)
             #filter low scored muts
             #combine recurrent motifs (add scores of each mut-motif so that highly recurrent mutated motifs get higher scores than non-recurrent ones or ?)
-            #print "Filtering, merging and grouping mut-motifs "
+            #print("Filtering, merging and grouping mut-motifs ")
             annotated_mutations_final_output_file_scored_merged = annotated_mutations_final_output_file_ranked + "rankedmerged"
             if not os.path.exists(annotated_mutations_final_output_file_scored_merged):
                 process_annotated_scored_mutations_rankedMutsbyPercentile(annotated_mutations_final_output_file_ranked, annotated_mutations_final_output_file_scored_merged, only_unify_per_sample = False)
@@ -707,8 +707,8 @@ if __name__ == '__main__':
         #calculate a p-value for each mutated motif, does the motif get such a score or a higher score at random? also take into account the mutation frequency of the samples and motif-length+others?
         #calculate FDR for each motif based on on all the reported motifs
             if not os.path.exists(annotated_mutations_statcalc_output_file):
-                print "Calculating p-values"
-                print "getting mut frequency per sample"
+                print("Calculating p-values")
+                print("getting mut frequency per sample")
                 sample_id_and_number_of_mutations_per_sample_dict = get_number_of_mutations_per_sample_list_and_write_to_file(Mutations_dir_list, "", index_sample_ids=8)
                 number_of_elements_tested = file_len(annotated_mutations_final_output_file_scored_merged)
                 if header:
@@ -720,10 +720,10 @@ if __name__ == '__main__':
         annotated_mutations_statcalc_output_file_scores_significance = annotated_mutations_statcalc_output_file + "_scoresSig"
         if compute_score_sig:
             if not os.path.exists(annotated_mutations_statcalc_output_file_scores_significance):
-                print "Calculating p-values for the scores"
+                print("Calculating p-values for the scores")
                 mean_and_sd_from_the_simulations_dict = get_mean_and_sd_from_simulation_sets(params['scored_simulation_input_file'], params['mean_and_sd_output_file'], score_index_simulation_file=int(params['score_index_simulation_file']))
-                print "mean and sd from: " + params['scored_simulation_input_file']
-                print mean_and_sd_from_the_simulations_dict
+                print("mean and sd from: " + params['scored_simulation_input_file'])
+                print(mean_and_sd_from_the_simulations_dict)
                 get_pvalues_per_element_score(annotated_mutations_statcalc_output_file, annotated_mutations_statcalc_output_file_scores_significance, mean_and_sd_from_the_simulations_dict, element_score_index_obs_file=int(params['element_score_index_obs_file']))
         else:
             annotated_mutations_statcalc_output_file_scores_significance = annotated_mutations_statcalc_output_file

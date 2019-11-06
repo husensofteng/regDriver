@@ -200,11 +200,11 @@ def score_motifs_according_to_their_affect(motif_PFM_input_file, muts_mutated_mo
                 overlapping_motifs_same_mutation = {}
                 
     if len(motif_lengths_not_matched)>0:
-        print  "Motifs that their length didn't match those in the PFM file"
-        print motif_lengths_not_matched
+        print( "Motifs that their length didn't match those in the PFM file")
+        print(motif_lengths_not_matched)
     if len(motif_names_not_matched)>0:
-        print  "Motifs that name didn't match any motif in the PFM file"
-        print motif_names_not_matched
+        print("Motifs that name didn't match any motif in the PFM file")
+        print(motif_names_not_matched)
         
     return mutated_motifs_scored_output_file
 
@@ -235,17 +235,17 @@ def calculate_p_value_motifregions(mutated_regions, sample_id_and_number_of_muta
                 if sample_id in sample_id_and_number_of_mutations_per_sample_dict.keys():
                     avg_proportion_of_mutations_in_the_samples_of_this_region += ((float(sample_id_and_number_of_mutations_per_sample_dict[sample_id]))/genome_size)
                 #else:
-                #    print "Key Error - sample ID not found in the initial mutations found: " + sample_id
+                #    print("Key Error - sample ID not found in the initial mutations found: " + sample_id)
         p = avg_proportion_of_mutations_in_the_samples_of_this_region/(len(samples_counted)*1.0)
         n = (int(split_line[index_elment_stop_coordinate]) - int(split_line[index_elment_start_coordinate])) #* len(sample_id_and_number_of_mutations_per_sample_dict.keys()) #region length (end-start) multiplied by the total number of tested samples
         k = mutation_frequency
         p_val_of_this_region = 1 - (binom.cdf(k, n, p))
         reported_p_values.append(p_val_of_this_region)
     
-    print len(reported_p_values)
+    print(len(reported_p_values))
     while len(reported_p_values) < total_number_tested_regions:
         reported_p_values.append(1)
-    print "correcting p-values for multiple testing"
+    print("correcting p-values for multiple testing")
     if len(reported_p_values)>0:
         significant_bool_report, corrected_p_values_array, alphacSidak, alphacBonf = multipletests(reported_p_values, alpha=0.05, method='fdr_bh', returnsorted=False) #returns 4 things: a boolean array contains True or False for each value meaning wether the value after correction compared to the given alpha is significant or not, an array of the values after correction, a single for corrected alpha for Sidak method, a single value for corrected alpha for Bonferroni method 
         corrected_p_values_list = corrected_p_values_array.tolist()
@@ -259,7 +259,7 @@ def get_number_of_mutations_per_sample_list_and_write_to_file(Mutations_dir_list
         numberofmutationspersample_output_file = "numebrofmutationspersample.txt"
     sample_id_and_number_of_mutations_per_sample_dict = {}  
     if not os.path.exists(numberofmutationspersample_output_file):
-        print "Counting number of mutations per sample from the initial mutation file"
+        print("Counting number of mutations per sample from the initial mutation file")
         for mutations_file in Mutations_dir_list:
             with open(mutations_file, "r") as mutations_infile:
                 mutations_line = mutations_infile.readline()
@@ -358,7 +358,7 @@ def unify_motifs_sites_of_the_same_tfs(motif_sites_in_file, unified_motif_sites_
     number_of_unified_sites = 0
     number_unified_sites_per_TF = 0
     list_of_unified_TFs = []
-    print "Unifying motif sites....."
+    print("Unifying motif sites.....")
     for TF in TFs_dict.keys():
         TFj_motifs = [] #this will be filled with the motif names of each TF, motif-name, distance-from-start and end of-the-largest-motif
         site_snps = []
@@ -494,10 +494,10 @@ def unify_motifs_sites_of_the_same_tfs(motif_sites_in_file, unified_motif_sites_
                     number_of_unified_sites+=1
                     number_unified_sites_per_TF+=1
         list_of_unified_TFs.append([TF, number_unified_sites_per_TF])
-    print "Total no. unified sites (mutated) of all TFs: " + str(number_of_unified_sites)
-    #print "[Unified TFs, number of sites]:"
-    #print list_of_unified_TFs 
-    print "********"
+    print("Total no. unified sites (mutated) of all TFs: " + str(number_of_unified_sites))
+    #print("[Unified TFs, number of sites]:")
+    #print(list_of_unified_TFs)
+    print("********")
     
     unified_motif_sites_out_both_strands.close()
     
@@ -666,7 +666,7 @@ if __name__ == '__main__':
     calculate_p_value_motifregions(mutated_elements_file, sample_id_and_number_of_mutations_per_sample_dict, mutated_regions_pval_outfile="", index_mutation_frequency=6, index_sample_ids=7, index_elment_start_coordinate=1, index_elment_stop_coordinate=2, genome_size=3000000000.0, total_number_tested_regions=number_of_elements_tested)
     
     if len(sys.argv) != 3:
-        print "Usage: motif_PFM_input_file muts_mutated_motifs_input_file (muts-9col and motifs-6col"
+        print("Usage: motif_PFM_input_file muts_mutated_motifs_input_file (muts-9col and motifs-6col")
         exit()
         
     '''motif_PFM_input_file="motifs_converted_tab_to_space.PFM" #sys.argv[1]

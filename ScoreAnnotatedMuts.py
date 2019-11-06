@@ -6,9 +6,7 @@ Created on May 18, 2016
 import pandas as pd
 import statsmodels.api as sm
 import numpy as np
-#import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
-#from patsy.contrasts import Treatment
 
 '''
 Given a list of annotated mutations whose scores are known find the weight for each annotation.
@@ -61,13 +59,13 @@ def getWeightsforAnnotations(annoated_scored_muts_input_file, outcome_col_name="
     
     #error here
     logit = sm.Logit(y,X).fit(method='bfgs', full_output=True)#, maxiter=1000000000
-    print logit.summary()
+    print(logit.summary())
     
     for k in X.columns:
         kk = X[k]
-        print y.corr(kk)
+        print(y.corr(kk))
 
-    print "log odds ratio is reported: logit.params:"
+    print("log odds ratio is reported: logit.params:")
     return logit.params#think of negative values (excluded) ((weightXi[without exp, just use the result from here logit.params]*valueXi)+(weightXi+1*valueXi+1))
     #return np.exp(logit.params)# think of values less than one (should be excluded, may be). (weightXi^valueXi)*weightXi+1*exp(valueXi+1)))
 
@@ -97,30 +95,3 @@ def get_col_names():
     
     return col_names
 
-
-if __name__ == '__main__':
-    outcome_col_name = 'Mut_score'
-    outcome_col_index = 6
-    col_names = get_col_names()
-    col_names_to_weight = ['Entropy_diff', 'normal_expression_level_of_this_motif',  
-                                'same_factor_overlaps', 'all_factors_same_cell_overlaps', 'dnase_overlap', 'contactingdomain_overlap', 'loopdomain_overlap', 'cage_overlap']#, 'chromhmm_overlap_to_report', 'replicationtiming_label_overlap_to_report']
-    col_indexes_to_weight = []
-    for c in col_names_to_weight:
-        if c in col_names:
-            col_indexes_to_weight.append(col_names.index(c))
-        else:
-            del col_names_to_weight[c]
-    outcome_col_name = 'Mut_score'
-    outcome_col_index = 6
-    take_abs_entropy_diff = False
-    log_base =10
-    k = getWeightsforAnnotations('~/Documents/Group-Projects/PCAWG/regDriverTest/MauranoTrainingAnnotatedNoDiscMotifs', 
-                             outcome_col_name = outcome_col_name,
-                             outcome_col_index = outcome_col_index, 
-                             list_of_cols_names = col_names_to_weight,
-                             list_of_cols_index = col_indexes_to_weight,
-                             take_abs_entropy_diff=take_abs_entropy_diff, log_base=log_base)
-    k.name = "ORs"
-    for p in range(0, len(k)):
-        print k.index[p] + "=" + str(k[p])
-    print k.index[0]

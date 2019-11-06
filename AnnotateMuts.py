@@ -5,10 +5,10 @@ Created on Mar 29, 2016
 '''
 import sys,os
 from pybedtools import BedTool
-#import regDriver #for testing purpose in this module only -- can safely be removed after removing the main function of this module
 import numpy as np
 import math
 from collections import Counter
+
 '''The input file should have the following format:
 9-col mutation-info
 6-col motif-info
@@ -51,14 +51,14 @@ def annotate_snvs_with_elements(snv_motif_element_grouped_input_file, tumor_cell
             write_last_mut_lines = False
             counter = 0
             sum = 0
-            print "Mutation Annotation has Started"
+            print("Mutation Annotation has Started")
 
             while len(split_line)>=overlaps_info_index:
-                #print a line every after processing each 100000 lines
+                "a line every after processing each 100000 lines"
                 counter+=1
                 if counter==100000:
                     sum+=counter
-                    print "#lines processed: " + str(sum) + " from " + snv_motif_element_grouped_input_file + " into " + snv_motif_element_grouped_output_file
+                    print("#lines processed: " + str(sum) + " from " + snv_motif_element_grouped_input_file + " into " + snv_motif_element_grouped_output_file)
                     counter = 0
                 #define and initialize the variables    
                 same_factor = 'NA'
@@ -524,7 +524,7 @@ def annotate_snvs_with_elements(snv_motif_element_grouped_input_file, tumor_cell
                     snv_motif_element_grouped_outfile.write('\n'.join(annotated_mutations_output_line) + '\n' )
                 overlapping_motifs_same_mutation = []
 
-    print "Finished the annotation process"
+    print("Finished the annotation process")
     return snv_motif_element_grouped_output_file
 
 """
@@ -642,25 +642,6 @@ def add_this_line_to_overlapping_motifs_check(mut_motif_info, index_normal_expre
     else:
         return False
 
-
-if __name__ == '__main__':
-    
-    tumor_cell_dict_input_file = sys.argv[1]#"TumorCellMatches"
-    target_director_of_cells_info = sys.argv[2]#"."
-    TFFamily_matches_input_file = sys.argv[3]
-    snv_motif_elements_chr_dir_path = sys.argv[4]
-    snv_motif_elements_chr_dir_list = os.listdir(snv_motif_elements_chr_dir_path)
-    
-    tumor_cells_dict = regDriver.map_cellNames_to_originTypes(tumor_cell_dict_input_file)
-    list_of_cell_tracks  = regDriver.retreive_cell_elment_datasets(target_director_of_cells_info)
-    TFFamily_TFName_matches = regDriver.retreive_TFFamilyName_for_motifNames(TFFamily_matches_input_file)
-
-    for snv_motif_element_input_file in snv_motif_elements_chr_dir_list:
-        print snv_motif_elements_chr_dir_path+'/'+snv_motif_element_input_file
-        snv_motif_element_grouped_input_file = group_snvs_motifs_with_element_names(snv_motif_elements_chr_dir_path+'/'+snv_motif_element_input_file)
-        annotated_file = annotate_snvs_with_elements(snv_motif_element_grouped_input_file, tumor_cells_dict, list_of_cell_tracks, TFFamily_TFName_matches)
-        print annotated_file
-    
 
 
 

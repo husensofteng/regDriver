@@ -34,13 +34,13 @@ def get_muts_tracks_info(muts_input_file, tracks_dir, muts_dir_out, split_muts_f
                 os.system("""awk '{{print $0 >> "{muts_dir}/"$1"{chr_ext}"}}' {muts_file} """.format(muts_dir=muts_dir_out, chr_ext=chr_ext, muts_file=muts_input_file))
                 muts_files = [muts_dir_out+'/'+x for x in os.listdir(muts_dir_out) if x.endswith(chr_ext)]
         
-        print 'muts_files:  ', muts_files
-        print 'tracks_files: ', tracks_files
+        print('muts_files:  ', muts_files)
+        print('tracks_files: ', tracks_files)
         for muts_file in muts_files:
             if muts_file.split('/')[-1] in tracks_files:
                 muts_tracks_file = muts_file+"_overlapping_tracks.bed10"
                 if not os.path.exists(muts_tracks_file):
-                    print "Intersecting and Grouping: ", muts_tracks_file
+                    print("Intersecting and Grouping: ", muts_tracks_file)
                     BedTool(muts_file).intersect(BedTool(tracks_dir+'/'+tracks_files[tracks_files.index(muts_file.split('/')[-1])]), wo=True, loj=True).groupby(g=[1,2,3,4,5,6,7,8,9], c=13, o=['collapse']).saveas(muts_tracks_file)
                 muts_tracks_files.append(muts_tracks_file)
     else:
@@ -50,10 +50,10 @@ def get_muts_tracks_info(muts_input_file, tracks_dir, muts_dir_out, split_muts_f
                 
             muts_tracks_file = muts_dir_out+'/'+tracks_file+"_overlapping_tracks.bed10"
             if not os.path.exists(muts_tracks_file):
-                print "Intersecting and Grouping: ", muts_tracks_file
+                print("Intersecting and Grouping: ", muts_tracks_file)
                 BedTool(muts_input_file).intersect(BedTool(tracks_dir+'/'+tracks_file), wo=True, loj=True).groupby(g=[1,2,3,4,5,6,7,8,9], c=13, o=['collapse']).saveas(muts_tracks_file)
             muts_tracks_files.append(muts_tracks_file)
-    print 'muts_tracks_files: ', muts_tracks_files
+    print('muts_tracks_files: ', muts_tracks_files)
     return muts_tracks_files
 
 def annotate_muts(muts_tracks_file, muts_tracks_ouput_file, tissue_cell_assays, matching_cell_name_representative_dict, cancer_type_index = 9, tracks_info_index = 3):
@@ -63,7 +63,7 @@ def annotate_muts(muts_tracks_file, muts_tracks_ouput_file, tissue_cell_assays, 
             annotations = {}
             tracks = l[tracks_info_index].split(',')
             for track in tracks:
-                #print track, l[cancer_type_index]
+                #print(track, l[cancer_type_index])
                 cellname = track.split('#')[0]
                 try:
                     cellname = matching_cell_name_representative_dict[cellname][0]
@@ -86,11 +86,11 @@ def annotate_muts(muts_tracks_file, muts_tracks_ouput_file, tissue_cell_assays, 
                         except IndexError:
                                 annotations[track.split('#')[1]] = [1.0]
                 except KeyError:
-                    print "Cancer type not found: ", l[cancer_type_index]
-                    print track
-                    print cellname
-                    print l[cancer_type_index]
-                    print tissue_cell_assays[l[cancer_type_index]]
+                    print("Cancer type not found: ", l[cancer_type_index])
+                    print(track)
+                    print(cellname)
+                    print(l[cancer_type_index])
+                    print(tissue_cell_assays[l[cancer_type_index]])
                     break
                 
             for anno in sorted(annotations.keys()):
@@ -172,7 +172,7 @@ def get_annotated_muts(muts_input_file, tracks_dir, muts_out):
         with open(muts_out, 'w') as muts_ofile:
             for muts_tracks_file in muts_tracks_files:
                 muts_tracks_ouput_file = muts_tracks_file+"_annotated" 
-                print "Annotating: ", muts_tracks_ouput_file
+                print("Annotating: ", muts_tracks_ouput_file)
                 annotate_muts(muts_tracks_file, muts_tracks_ouput_file, tissue_cell_assays, matching_cell_name_representative_dict, cancer_type_index = 5, tracks_info_index = 9)
                 with open(muts_tracks_ouput_file, 'r') as muts_tracks_ouput_ifile:
                     muts_ofile.write(muts_tracks_ouput_ifile.read())
