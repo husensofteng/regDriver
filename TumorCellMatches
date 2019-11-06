@@ -1,0 +1,54 @@
+//cancer-project=matchingcell1#datatype1,matchingcell1#datatype2,matchingcell2#datatype1,matchingcell2#datatype3
+//TGBC2TKB, TGBC14TKB: gall bladder carcinoma cell line
+BLCA-US=UT189,TGBC14TKB,TGBC2TKB
+//143B/TK^(-)neo^(R) is also osteosarcoma cell line but it's ignore here (incorrect name format)
+BOCA-UK=osteoblast,U2OS,HS-Os-1,Hs
+BRCA-EU=MCF-7,T47D,MCF 10A,HMEC,MCF7,MDA-MB-453,Mcf7
+BRCA-UK=MCF-7,T47D,MCF 10A,HMEC,MCF7,MDA-MB-453,Mcf7
+BRCA-US=MCF-7,T47D,MCF 10A,HMEC,MCF7,MDA-MB-453,Mcf7
+//Biliary tract cancer - Gall bladder cancer/Cholangiocarcinoma - SG
+BTCA-SG=TGBC14TKB,TGBC2TKB
+CESC-US=HeLa-S3,HeLa,ME-180,D98-AH2,HCSC-1,Helas3
+CLLE-ES=GM12878,SKW-3,Gm12878
+CMDI-UK=K562,KBM7
+COAD-US=HCT116,COLO-320,CACO-2
+DLBC-US=GM12878,Gm12878,CTB-1
+EOPC-DE=LNCaP clone FGC,DU145,PC-3
+//FHs: normal intestinal epithelial cell line:FHs 74 Int
+ESAD-UK=epithelial cell of esophagus,FHs
+GACA-CN=Gastric,GSS,AZ521
+GBM-US=astrocyte,T98G,A172
+//Ca9-22,HO-1-u-1,HSC-3,SAS: oral squamous cell carcinoma cell line
+HNSC-US=SalivaryCell,ThyroidCell,Ca9-22,HO-1-u-1,HSC-3,SAS
+KICH-US=HEK293,HEK293/SLAM,Kidney_curated
+KIRC-US=HEK293,OS-RC-2,TUHR10TKB,Kidney_curated
+KIRP-US=HEK293,OS-RC-2,TUHR10TKB,Kidney_curated
+LAML-KR=K562,KG-1,Kasumi-1,Kasumi-3,Kasumi-6,M-MOK,MKPL-1,NKM-1,NOMO-1,THP-1,U-937,EEB,EoL-1,EoL-3,F-36E,F-36P,FKH-1,HL60,HYT-1 
+LAML-US=K562,KG-1,Kasumi-1,Kasumi-3,Kasumi-6,M-MOK,MKPL-1,NKM-1,NOMO-1,THP-1,U-937,EEB,EoL-1,EoL-3,F-36E,F-36P,FKH-1,HL60,HYT-1
+LGG-US=astrocyte,GI-1
+LICA-FR=HepG2,Hepg2
+LIHC-US=HepG2,Hepg2
+LINC-JP=HepG2,Hepg2
+LIRI-JP=HepG2,Hepg2
+LUAD-US=A549,IMR-90,IMR90,Imr90,NCI-H441,PC-14
+LUSC-US=A549,IMR-90,IMR90,Imr90,LC-1F,EBC-1
+MALY-DE=GM12878,Gm12878,MLMA
+MELA-AU=keratinocyte,NHEK,Nhek,G-361
+ORCA-IN=SalivaryCell,ThyroidCell,Ca9-22,HO-1-u-1,HSC-3,SAS
+OV-AU=Ovary,SK-OV-3-R
+OV-US=Ovary,SK-OV-3-R
+PACA-AU=Panc1,NOR-P1,Pancreas_curated
+PACA-CA=Panc1,NOR-P1,Pancreas_curated
+PAEN-AU=Panc1,NOR-P1,Pancreas_curated
+PBCA-DE=SK-N-SH,Sknsh
+PRAD-CA=LNCaP clone FGC,DU145,PC-3,Prostate_curated
+PRAD-UK=LNCaP clone FGC,DU145,PC-3,Prostate_curated
+PRAD-US=LNCaP clone FGC,DU145,PC-3,Prostate_curated
+READ-US=TT1TKB
+RECA-EU=HEK293,TUHR10TKB,OS-RC-2,Kidney_curated
+//HS-ES-1: epithelioid sarcoma cell line
+SARC-US=HS-ES-1
+SKCM-US=keratinocyte,NHEK,Nhek,G-361 
+STAD-US=Gastric,MKN1,MKN45
+THCA-US=SalivaryCell,ThyroidCell,TCO-1,KHM-5M
+UCEC-US=Ishikawa,urothelium cell line,OMC-2

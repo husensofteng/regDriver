@@ -1,0 +1,107 @@
+//get info for the following cells (one column for each of their assays)
+A172
+A549
+AZ521
+CACO-2
+COLO-320
+CTB-1
+Ca9-22
+D98-AH2
+DU145
+EBC-1
+EEB
+EoL-1
+EoL-3
+F-36E
+F-36P
+FHs
+FKH-1
+G-361
+GI-1
+GM12878=Gm12878
+GSS
+Gastric
+HCSC-1
+HCT116
+HEK293=HEK293/SLAM
+HL60
+HMEC
+HO-1-u-1
+HS-ES-1
+HS-Os-1
+HSC-3
+HYT-1
+HeLa-S3=HeLa,Helas3
+HepG2=Hepg2
+IMR-90=IMR90,Imr90
+Ishikawa
+K562
+KBM7
+KG-1
+KHM-5M
+Kasumi-1
+Kasumi-3
+Kasumi-6
+Kidney_curated
+LC-1F
+LNCaP clone FGC
+M-MOK
+MCF 10A
+MCF-7=MCF7,Mcf7
+MDA-MB-453
+ME-180
+MKN1
+MKN45
+MKPL-1
+MLMA
+NCI-H441
+NHEK=Nhek
+NKM-1
+NOMO-1
+NOR-P1
+OMC-2
+OS-RC-2
+Ovary
+PC-14
+PC-3
+Panc1
+Pancreas_curated
+Prostate_curated
+SAS
+SK-N-SH=Sknsh
+SKW-3
+SK-OV-3-R
+T47D
+T98G
+TCO-1
+TGBC14TKB
+TGBC2TKB
+THP-1
+TT1TKB
+TUHR10TKB
+U-937
+U2OS
+UT189
+astrocyte
+epithelial cell of esophagus
+keratinocyte
+osteoblast
+urothelium cell line
+Bladder
+Brain - Cerebellar Hemisphere
+Brain - Spinal cord (cervical c-1)
+Breast - Mammary Tissue
+Cells - EBV-transformed lymphocytes
+Cervix - Endocervix
+Colon - Sigmoid
+Esophagus - Gastroesophageal Junction
+Kidney - Cortex
+Liver
+Lung
+Pancreas
+Prostate
+Skin - Sun Exposed (Lower leg)
+Stomach
+Thyroid
+Uterus
+Whole Blood
